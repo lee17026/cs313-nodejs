@@ -19,7 +19,7 @@ express()
 // handle the form
   .get('/getRate', week09logic.getRate)
 // week 10 project 2 account creation page and checking page
-//  .get('/createShopper', week10logic.createShopper)
+  .get('/createShopper', week10logic.createShopper)
 //  .get('/authenticateShopper', week10logic.authenticateShopper)
 // project 2 proof of concept
   .get('/week10', (req, res) => res.render('pages/week10signin.ejs'))
