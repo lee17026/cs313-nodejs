@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Week 10 Proof of Concept</title>
+        <% include ../partials/myHeader.ejs %>  
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+      <div name="container">
+        <h3>Example Table</h3>
+        <table class="table table-striped">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Store</th>
+            <th scope="col">Price</th>
+            <th scope="col">Grams Protein Per Dollar</th>
+          </tr>
+          <% results.forEach(function(r) { %>
+          <tr>
+            <td><%= r.name %></td>
+            <td><%= r.store %></td>
+            <td>$<%= r.price %></td>
+            <td><%= (r.protein / r.price).toFixed(2) %></td>
+          </tr>
+          <% }); %>
+        </table>
+      </div>
+    </body>
+</html>
