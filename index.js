@@ -118,7 +118,7 @@ express()
   })
   .post('/getAllItems', (req, res) => {
     // prepare the sql statement and parameters
-    let sql = 'SELECT i.name, i.brand, i.net_weight, i.price, u.name AS unit, s.name AS store, i.protein / i.price AS protein_per_dollar, i.calorie / i.price AS calorie_per_dollar, i.gram_net_weight / i.price AS gram_per_dollar FROM item i JOIN store s ON (i.store_id = s.id) JOIN unit u ON (i.unit_id = u.id)';
+    let sql = 'SELECT i.name, i.brand, i.net_weight, i.price, u.name AS unit, s.name AS store, i.protein / i.price AS protein_per_dollar, i.calorie / i.price AS calorie_per_dollar, i.gram_net_weight / i.price AS gram_per_dollar FROM item i JOIN store s ON (i.store_id = s.id) JOIN unit u ON (i.unit_id = u.id) ORDER BY name';
 
     // fire the query
     pool.query(sql, function (error, results) {
