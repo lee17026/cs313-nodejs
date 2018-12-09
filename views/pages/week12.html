@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+      <title>Week 12 Grocery Tracker</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+      <script src="/week12ajax.js"></script>
+      <meta charset="UTF-8" />
+    </head>
+  
+    <body>
+      <!-- Login Form -->
+      <div class="container" id="div-login">
+        <div class="row">
+          <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin my-5">
+              <div class="card-body">
+                <h3 class="card-title text-center">Sign In for Magic!</h3>
+                <div class="form-signin">
+                  <div class="form-label-group">
+                    <label for="inputUsername">Username</label>
+                    <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username" required autofocus>
+                  </div>
+                  <div class="form-label-group">
+                    <label for="inputPassword">Password</label>
+                    <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
+                  </div>
+                  <br />
+                  <button type="submit" class="btn btn-lg btn-primary btn-block text-uppercase" onclick="login()">Sign in</button> <br />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Add New Item Form -->
+      <div class="form-inline" id="div-new-item" style="display: none;">
+        <div class="form-group">
+          <label for="inputName">Name</label>
+          <input type="text" class="form-control" id="inputName" placeholder="Cornbread Mix">
+        </div>
+        <div class="form-group">
+          <label for="inputBrand">Brand</label>
+          <input type="text" class="form-control" id="inputBrand" placeholder="Jiffy">
+        </div>
+        <div class="form-group">
+          <label for="inputNetWeight">Net Weight</label>
+          <input type="number" class="form-control" id="inputNetWeight" placeholder="350" min="0">
+        </div>
+        <div class="form-group">
+            <label for="inputUnit">Unit</label>
+            <select class="form-control" id="inputUnit">
+              <option value="2">gram</option>
+              <option value="3">ounce</option>
+              <option value="5">pound</option>
+            </select>
+        </div> 
+        <div class="form-group">
+          <label for="inputPrice">Price</label>
+          <input type="number" class="form-control" id="inputPrice" placeholder="11.99" min="0">
+        </div>
+        <div class="form-group">
+          <label for="inputServing">Servings</label>
+          <input type="number" class="form-control" id="inputServing" placeholder="3" min="0" step="1">
+        </div>
+        <div class="form-group">
+          <label for="inputProtein">Protein/Serving</label>
+          <input type="number" class="form-control" id="inputProtein" placeholder="13" min="0" step="1">
+        </div>
+        <div class="form-group">
+          <label for="inputCalories">Calories/Serving</label>
+          <input type="number" class="form-control" id="inputCalories" placeholder="250" min="0" step="1">
+        </div>
+        <div class="form-group">
+            <label for="inputStore">Store</label>
+            <select class="form-control" id="inputStore">
+              <option value="1">Costco</option>
+              <option value="2">Target</option>
+              <option value="3">Whole Foods</option>
+              <option value="4">Aldi</option>
+              <option value="5">99 Ranch</option>
+              <option value="6">99 Cent Store</option>
+              <option value="7">WinCo</option>
+              <option value="8">Vons</option>
+              <option value="9">Superior</option>
+              <option value="10">Fresco</option>
+              <option value="11">Stater Bros.</option>
+              <option value="12">H Mart</option>
+              <option value="13">Trader Joe's</option>
+            </select>
+        </div> 
+        <button class="btn btn-primary" onclick="addItem()">Add New Item</button>
+        <button class="btn btn-default" onclick="clearItemFields()">Reset</button>
+      </div>
+      <br />
+      <br />
+      
+      <!-- Item Table -->
+      <div name="container" id="div-table" style="display: none;">
+        <h3>Example Table</h3>
+        <table class="table table-striped">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Store</th>
+            <th scope="col">Price</th>
+            <th scope="col">Grams Protein Per Dollar</th>
+          </tr>
+          <tr>
+            <td>a</td>
+            <td>b</td>
+            <td>c</td>
+            <td>d</td>
+          </tr>
+        </table>
+      </div>
+      
+      <br />
+      <br />
+      <br />
+      <br />
+      <div id="status"></div>
+
+    </body>
+</html>
