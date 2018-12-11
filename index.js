@@ -21,7 +21,7 @@ express()
         secret: 'my secret string', // secret for signing session ID cookie
         resave: false, // session will not be resaved if no changes are made
         saveUninitialized: true, // new but unmodified sessions will still be saved
-        cookie: { secure: false, // only set to true if we can use https
+        cookie: { secure: true, // only set to true if we can use https
                   maxAge: 7200000} // 2 hours
       }))
   .set('views', path.join(__dirname, 'views'))
