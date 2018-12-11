@@ -82,14 +82,14 @@ express()
   })
   .post('/addItem', (req, res) => {
     console.log("Here we are in POST /addItem.");
-    let name = String(req.body.name);
-    let brand = String(req.body.brand);
-    let netWeight = Number(req.body.netWeight);
-    let price = Number(req.body.price);
+    let name = String(stripJs(req.body.name));
+    let brand = String(stripJs(req.body.brand));
+    let netWeight = Number(stripJs(req.body.netWeight));
+    let price = Number(stripJs(req.body.price));
     let unitID = Number(req.body.unitID);
     let storeID = Number(req.body.storeID);
-    let protein = Number(req.body.protein);
-    let calories = Number(req.body.calories);
+    let protein = Number(stripJs(req.body.protein));
+    let calories = Number(stripJs(req.body.calories));
     let shopperID = req.session.shopperID;
   
     // convert units for gram_net_weight
@@ -134,8 +134,8 @@ express()
   })
   .post('/getFilteredItems', (req, res) => {
     console.log("Just entered POST /getFilteredItems.");
-    let name = String(req.body.name);
-    let brand = String(req.body.brand);
+    let name = String(stripJs(req.body.name));
+    let brand = String(stripJs(req.body.brand));
     let storeID = Number(req.body.storeID);
     console.log(name, brand, storeID);
   
@@ -149,7 +149,7 @@ express()
       //sql += " WHERE i.name ILIKE '%" + name + "%'";
       //numParams++;
       sql += " WHERE i.name ILIKE $" + (++numParams).toString() + "::text";
-      params.push('%' + name + '%');
+      params.push('%' + name + '%'); // wildcards added after, since they can't be added in the string
     }
     if (brand != null && brand != '') {
       if (numParams > 0) {
