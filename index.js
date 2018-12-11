@@ -21,7 +21,7 @@ express()
         secret: 'my secret string', // secret for signing session ID cookie
         resave: false, // session will not be resaved if no changes are made
         saveUninitialized: true, // new but unmodified sessions will still be saved
-        cookie: { secure: true, // only set to true if we can use https
+        cookie: { secure: true, // only set to true if we can use https (set to false if testing on a local machine)
                   maxAge: 7200000} // 2 hours
       }))
   .set('views', path.join(__dirname, 'views'))
@@ -147,7 +147,7 @@ express()
     let numParams = 0;
   
     // append filter variable if needed
-    if (name != null && name != '') {
+    if (name != null && name != '') { // only add this WHERE clause if data was entered
       //sql += " WHERE i.name ILIKE '%" + name + "%'";
       //numParams++;
       sql += " WHERE i.name ILIKE $" + (++numParams).toString() + "::text";
@@ -207,9 +207,9 @@ express()
     }
     sql += " " + order;
     
-  console.log("About to query: ");
-  console.log(sql);
-  console.log(params);
+    console.log("About to query: ");
+    console.log(sql);
+    console.log(params);
 
     // fire the query
     pool.query(sql, params, function (error, results) {

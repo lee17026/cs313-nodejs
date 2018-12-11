@@ -18,6 +18,7 @@ function login() {
         $("#div-table").show();
         $("#div-new-item").show();
         $("#div-filter-form").show();
+        $("#btn-top").show();
         clearAlerts();
       } else {
         alertWarning("Unable to log in.");
@@ -109,9 +110,11 @@ function hasEmpty(params) {
 }
 
 function clearItemFields() {
+  // clear out input text fields
   $("div#div-new-item :input").each(function() {
     $(this).val('');
   });
+  // return dropdown select inputs to default
   $("#inputUnit").val(2);
   $("#inputStore").val(1);
 }
@@ -120,7 +123,7 @@ function filter(col) {
   var name = $("#inputFilterName").val();
   var brand = $("#inputFilterBrand").val();
   var storeID = $("#inputFilterStore").val();
-  var order = $("#table_order").val();
+  var order = $("#table-order").val();
   //console.log("order == " + order);
 
   var params = {
@@ -137,11 +140,10 @@ function filter(col) {
       $('#div-table').html(tableHTML);
       if (col != -1) { // only swap if we clicked from sort
         if (order == "ASC") { // swap the sort order
-        $("#table_order").val("DESC");
+        $("#table-order").val("DESC");
       } else {
-        $("#table_order").val("ASC");
+        $("#table-order").val("ASC");
       }}
-      
     } else {
       $("#div-table").text("No results for that filter set. Please try again.");
     }
@@ -149,9 +151,11 @@ function filter(col) {
 }
 
 function clearFilterFields() {
+  // clear out each input text form
   $("div#div-filter-form :input").each(function() {
     $(this).val('');
   });
+  // and return the select input back to 0
   $("#inputFilterStore").val(0);
 }
 
@@ -189,4 +193,8 @@ function sortColumn(col) {
   //console.log(col);
   
   filter(col);
+}
+
+function toTop() {
+  $('html,body').scrollTop(0);
 }

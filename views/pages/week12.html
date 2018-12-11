@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-      <title>Week 12 Grocery Tracker</title>
+      <title>CS 313 | Project 2 | Grocery Tracker</title>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
@@ -95,7 +95,8 @@
         <button class="btn btn-default" onclick="clearItemFields()">Reset</button>
       </div>
       <br />
-      <br />
+      
+      <div id="status"></div>
       
       <!-- Filter Table Form -->
       <div class="form-inline" id="div-filter-form" style="display: none;">
@@ -128,7 +129,7 @@
         </div> 
         <button class="btn btn-primary" onclick="filter(-1)">Filter</button>
         <button class="btn btn-default" onclick="clearFilterFields()">Reset Form</button>
-        <button class="btn btn-default" onclick="buildFullTable()">Reset Table</button>
+        <button class="btn btn-default" onclick="buildFullTable(); clearFilterFields();">Reset Table</button>
       </div>
       
       <!-- Item Table -->
@@ -152,8 +153,8 @@
       
       <br />
       <br />
-      <div id="status"></div>
-      <input style="display: none;" type="text" id="table_order" value="ASC">
+      <input style="display: none;" type="text" id="table-order" value="ASC">
+      <button id="btn-top" style="display: none; position: fixed; bottom: -4px; right: 3px;" type="button" onclick="toTop()" class="btn btn-xs">&uarr; Top</button>
 
     </body>
 </html>
