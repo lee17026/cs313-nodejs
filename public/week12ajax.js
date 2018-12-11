@@ -18,6 +18,7 @@ function login() {
         buildFullTable();
         $("#div-table").show();
         $("#div-new-item").show();
+        $("#div-filter-form").show();
         clearAlerts();
       } else {
         //$("#status").text("Error logging in.");
@@ -77,7 +78,7 @@ function buildFullTable() {
   $.post("/getAllItems", function(result) {
     if (result && result.success) {
       // start building the table with the header
-      var tableHTML = '<table class="table table-striped"><tr><th scope="col">Name</th><th scope="col">Brand</th><th scope="col">Store</th><th scope="col">Net Weight</th><th scope="col">Unit</th><th scope="col">Price</th><th scope="col">Unit Price (g/$)</th><th scope="col">Grams Protein Per Dollar</th><th scope="col">Calories Per Dollar</th></tr>';
+      var tableHTML = '<table class="table table-striped"><tr><th scope="col">Name</th><th scope="col">Brand</th><th scope="col">Store</th><th scope="col">Net Weight</th><th scope="col">Unit</th><th scope="col">Price</th><th scope="col">Unit Price ($/gram)</th><th scope="col">Grams Protein Per Dollar</th><th scope="col">Calories Per Dollar</th></tr>';
       
       // build each row
       $.each(result.results.rows, function(index, row) {
@@ -94,7 +95,7 @@ function buildFullTable() {
         tableHTML += "</td><td>$";
         tableHTML += String((row.price).toFixed(2)).padStart(1,0);
         tableHTML += "</td><td>";
-        tableHTML += (row.gram_per_dollar).toFixed(2);
+        tableHTML += (row.unit_price).toFixed(6);
         tableHTML += "</td><td>";
         tableHTML += (row.protein_per_dollar).toFixed(3);
         tableHTML += "</td><td>";
@@ -147,4 +148,58 @@ function clearItemFields() {
   $("#inputProtein").val('');
   $("#inputCalories").val('');
   $("#inputServing").val('');
+}
+
+function filter() {
+  var name = $("#inputFilterName").val();
+  var brand = $("#inputFilterBrand").val();
+  var storeID = $("#inputFilterStore").val();
+
+  var params = {
+    name: name,
+    brand: brand,
+    storeID: storeID
+  };
+
+  $.post("/getFilteredItems", params, function(result) {
+    if (result && result.success) {
+      // start building the table with the header
+      var tableHTML = '<table class="table table-striped"><tr><th scope="col">Name</th><th scope="col">Brand</th><th scope="col">Store</th><th scope="col">Net Weight</th><th scope="col">Unit</th><th scope="col">Price</th><th scope="col">Unit Price ($/gram)</th><th scope="col">Grams Protein Per Dollar</th><th scope="col">Calories Per Dollar</th></tr>';
+      
+      // build each row
+      $.each(result.results.rows, function(index, row) {
+        tableHTML += "<tr><td>";
+        tableHTML += row.name;
+        tableHTML += "</td><td>";
+        tableHTML += row.brand;
+        tableHTML += "</td><td>";
+        tableHTML += row.store;
+        tableHTML += "</td><td>";
+        tableHTML += row.net_weight;
+        tableHTML += "</td><td>";
+        tableHTML += row.unit;
+        tableHTML += "</td><td>$";
+        tableHTML += String((row.price).toFixed(2)).padStart(1,0);
+        tableHTML += "</td><td>";
+        tableHTML += (row.unit_price).toFixed(6);
+        tableHTML += "</td><td>";
+        tableHTML += (row.protein_per_dollar).toFixed(3);
+        tableHTML += "</td><td>";
+        tableHTML += (row.calorie_per_dollar).toFixed(3);
+        tableHTML += "</td></tr>";
+      });
+      
+      // close it out
+      tableHTML += '</table>';
+      $('#div-table').html(tableHTML);
+    } else {
+      $("#div-table").text("No results for that filter set. Please try again.");
+    }
+  });
+}
+
+function clearFilterFields() {
+  $("#inputFilterName").val('');
+  $("#inputFilterBrand").val('');
+  $("#inputFilterStore").val(0);
 }

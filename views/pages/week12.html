@@ -16,7 +16,7 @@
           <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <div class="card card-signin my-5">
               <div class="card-body">
-                <h3 class="card-title text-center">Sign In for Magic!</h3>
+                <h3 class="card-title text-center">Sign In to Grocery Tracker</h3>
                 <div class="form-signin">
                   <div class="form-label-group">
                     <label for="inputUsername">Username</label>
@@ -63,7 +63,7 @@
         </div>
         <div class="form-group">
           <label for="inputServing">Servings</label>
-          <input type="number" class="form-control" id="inputServing" placeholder="3" min="0" step="1">
+          <input type="number" class="form-control" id="inputServing" placeholder="3" min="0">
         </div>
         <div class="form-group">
           <label for="inputProtein">Protein/Serving</label>
@@ -97,6 +97,40 @@
       <br />
       <br />
       
+      <!-- Filter Table Form -->
+      <div class="form-inline" id="div-filter-form" style="display: none;">
+        <div class="form-group">
+          <label for="inputFilterName">Name</label>
+          <input type="text" class="form-control" id="inputFilterName" placeholder="corn">
+        </div>
+        <div class="form-group">
+          <label for="inputFilterBrand">Brand</label>
+          <input type="text" class="form-control" id="inputFilterBrand" placeholder="kirkland">
+        </div>
+        <div class="form-group">
+            <label for="inputFilterStore">Store</label>
+            <select class="form-control" id="inputFilterStore">
+              <option value="0">All Stores</option>
+              <option value="1">Costco</option>
+              <option value="2">Target</option>
+              <option value="3">Whole Foods</option>
+              <option value="4">Trader Joe's</option>
+              <option value="5">Aldi</option>
+              <option value="6">99 Ranch</option>
+              <option value="7">99 Cent Store</option>
+              <option value="8">WinCo</option>
+              <option value="9">Vons</option>
+              <option value="10">Superior</option>
+              <option value="11">Fresco</option>
+              <option value="12">Stater Bros.</option>
+              <option value="13">H Mart</option>
+            </select>
+        </div> 
+        <button class="btn btn-primary" onclick="filter()">Filter</button>
+        <button class="btn btn-default" onclick="clearFilterFields()">Reset Form</button>
+        <button class="btn btn-default" onclick="buildFullTable()">Reset Table</button>
+      </div>
+      
       <!-- Item Table -->
       <div name="container" id="div-table" style="display: none;">
         <h3>Example Table</h3>
@@ -108,16 +142,14 @@
             <th scope="col">Grams Protein Per Dollar</th>
           </tr>
           <tr>
-            <td>a</td>
-            <td>b</td>
-            <td>c</td>
-            <td>d</td>
+            <td>You</td>
+            <td>shouldn't</td>
+            <td>see</td>
+            <td>this.</td>
           </tr>
         </table>
       </div>
       
-      <br />
-      <br />
       <br />
       <br />
       <div id="status"></div>

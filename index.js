@@ -92,13 +92,13 @@ express()
     let calories = Number(req.body.calories);
     let shopperID = req.session.shopperID;
   
-  // convert units for gram_net_weight
-  let gramNetWeight = netWeight;
-  if (unitID == 3) { // ounce!
-    gramNetWeight *= 28.3495;
-  } else if (unitID == 5) { // pound!
-    gramNetWeight *= 453.592;
-  }
+    // convert units for gram_net_weight
+    let gramNetWeight = netWeight;
+    if (unitID == 3) { // ounce!
+      gramNetWeight *= 28.3495;
+    } else if (unitID == 5) { // pound!
+      gramNetWeight *= 453.592;
+    }
 
     // prepare the sql statement and parameters
     let sql = "INSERT INTO item (name, brand, net_weight, price, unit_id, store_id, protein, calorie, shopper_id, gram_net_weight) VALUES ($1::text, $2::text, $3, $4, $5::int, $6::int, $7::int, $8::int, $9::int, $10)";
@@ -118,7 +118,7 @@ express()
   })
   .post('/getAllItems', (req, res) => {
     // prepare the sql statement and parameters
-    let sql = 'SELECT i.name, i.brand, i.net_weight, i.price, u.name AS unit, s.name AS store, i.protein / i.price AS protein_per_dollar, i.calorie / i.price AS calorie_per_dollar, i.gram_net_weight / i.price AS gram_per_dollar FROM item i JOIN store s ON (i.store_id = s.id) JOIN unit u ON (i.unit_id = u.id) ORDER BY name';
+    let sql = 'SELECT i.name, i.brand, i.net_weight, i.price, u.name AS unit, s.name AS store, i.protein / i.price AS protein_per_dollar, i.calorie / i.price AS calorie_per_dollar, i.price / i.gram_net_weight AS unit_price FROM item i JOIN store s ON (i.store_id = s.id) JOIN unit u ON (i.unit_id = u.id) ORDER BY name';
 
     // fire the query
     pool.query(sql, function (error, results) {
@@ -128,6 +128,63 @@ express()
         res.json({success: false});
       } else {
         console.log('All items found!');
+        res.json({success: true, "results": results});
+      } // end of else
+    }); // end of pool.query()
+  })
+  .post('/getFilteredItems', (req, res) => {
+    console.log("Just entered POST /getFilteredItems.");
+    let name = String(req.body.name);
+    let brand = String(req.body.brand);
+    let storeID = Number(req.body.storeID);
+    console.log(name, brand, storeID);
+  
+    // prepare the sql statement and parameters
+    let sql = 'SELECT i.name, i.brand, i.net_weight, i.price, u.name AS unit, s.name AS store, i.protein / i.price AS protein_per_dollar, i.calorie / i.price AS calorie_per_dollar, i.price / i.gram_net_weight AS unit_price FROM item i JOIN store s ON (i.store_id = s.id) JOIN unit u ON (i.unit_id = u.id)';
+    let params = new Array();
+    let numParams = 0;
+  
+    // append filter variable if needed
+    if (name != null && name != '') {
+      //sql += " WHERE i.name ILIKE '%" + name + "%'";
+      //numParams++;
+      sql += " WHERE i.name ILIKE $" + (++numParams).toString() + "::text";
+      params.push('%' + name + '%');
+    }
+    if (brand != null && brand != '') {
+      if (numParams > 0) {
+        sql += " AND";
+      } else {
+        sql += " WHERE";
+      }
+      //sql += " i.brand ILIKE '%" + brand + "%'";
+      //numParams++;
+      sql += " i.brand ILIKE $" + (++numParams).toString() + "::text";
+      params.push('%' + brand + '%');
+    }
+    if (storeID > 0) {
+      if (numParams > 0) {
+        sql += " AND";
+      } else {
+        sql += " WHERE";
+      }
+      sql += " s.id = $" + (++numParams).toString() + "::int";
+      params.push(storeID);
+    }
+  
+  console.log("About to query: ");
+  console.log(sql);
+  console.log(params);
+
+    // fire the query
+    pool.query(sql, params, function (error, results) {
+      if (error || results.rows.length == 0) {
+        // error or no results match
+        console.log("Something went wrong in /getFilteredItems. Maybe no rows were returned.");
+        console.log(error);
+        res.json({success: false});
+      } else {
+        console.log('Filtered list created!');
         res.json({success: true, "results": results});
       } // end of else
     }); // end of pool.query()
