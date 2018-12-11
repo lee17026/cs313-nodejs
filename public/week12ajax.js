@@ -116,21 +116,32 @@ function clearItemFields() {
   $("#inputStore").val(1);
 }
 
-function filter() {
+function filter(col) {
   var name = $("#inputFilterName").val();
   var brand = $("#inputFilterBrand").val();
   var storeID = $("#inputFilterStore").val();
+  var order = $("#table_order").val();
+  //console.log("order == " + order);
 
   var params = {
     name: name,
     brand: brand,
-    storeID: storeID
+    storeID: storeID,
+    col: col,
+    order: order
   };
 
   $.post("/getFilteredItems", params, function(result) {
     if (result && result.success) {
       let tableHTML = buildTableHTML(result);
       $('#div-table').html(tableHTML);
+      if (col != -1) { // only swap if we clicked from sort
+        if (order == "ASC") { // swap the sort order
+        $("#table_order").val("DESC");
+      } else {
+        $("#table_order").val("ASC");
+      }}
+      
     } else {
       $("#div-table").text("No results for that filter set. Please try again.");
     }
@@ -146,7 +157,7 @@ function clearFilterFields() {
 
 function buildTableHTML(result) {
   // build header
-  var tableHTML = '<table class="table table-striped"><tr><th scope="col">Name</th><th scope="col">Brand</th><th scope="col">Store</th><th scope="col">Net Weight</th><th scope="col">Unit</th><th scope="col">Price</th><th scope="col">Unit Price ($/gram)</th><th scope="col">Grams Protein Per Dollar</th><th scope="col">Calories Per Dollar</th></tr>';
+  var tableHTML = '<table class="table table-striped" id="table-main"><tr><th scope="col" onclick="sortColumn(0)"><button type="button" class="btn btn-link">Name</button></th><th scope="col" onclick="sortColumn(1)"><button type="button" class="btn btn-link">Brand</button></th><th scope="col" onclick="sortColumn(2)"><button type="button" class="btn btn-link">Store</button></th><th scope="col" onclick="sortColumn(3)"><button type="button" class="btn btn-link">Net Weight</button></th><th scope="col" onclick="sortColumn(4)"><button type="button" class="btn btn-link">Unit</button></th><th scope="col" onclick="sortColumn(5)"><button type="button" class="btn btn-link">Price</button></th><th scope="col" onclick="sortColumn(6)"><button type="button" class="btn btn-link">Unit Price (g/$)</button></th><th scope="col" onclick="sortColumn(7)"><button type="button" class="btn btn-link">Grams Protein / Dollar</button></th><th scope="col" onclick="sortColumn(8)"><button type="button" class="btn btn-link">Calories / Dollar</button></th></tr>';
   // build each row
   $.each(result.results.rows, function(index, row) {
     tableHTML += "<tr><td>";
@@ -172,4 +183,10 @@ function buildTableHTML(result) {
   // finish it off
   tableHTML += '</table>';
   return tableHTML;
+}
+
+function sortColumn(col) {
+  //console.log(col);
+  
+  filter(col);
 }

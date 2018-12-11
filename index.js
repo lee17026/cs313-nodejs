@@ -137,7 +137,9 @@ express()
     let name = String(stripJs(req.body.name));
     let brand = String(stripJs(req.body.brand));
     let storeID = Number(req.body.storeID);
-    console.log(name, brand, storeID);
+    let col = Number(req.body.col);
+    let order = req.body.order;
+    console.log(name, brand, storeID, col, order);
   
     // prepare the sql statement and parameters
     let sql = 'SELECT i.name, i.brand, i.net_weight, i.price, u.name AS unit, s.name AS store, i.protein / i.price AS protein_per_dollar, i.calorie / i.price AS calorie_per_dollar, i.price / i.gram_net_weight AS unit_price FROM item i JOIN store s ON (i.store_id = s.id) JOIN unit u ON (i.unit_id = u.id)';
@@ -172,6 +174,39 @@ express()
       params.push(storeID);
     }
   
+    // append sorting string if needed
+    sql += " ORDER BY";
+    switch (col) {
+      case 1:
+        sql += " i.brand";
+        break;
+      case 2:
+        sql += " s.name";
+        break;
+      case 3:
+        sql += " i.net_weight";
+        break;
+      case 4:
+        sql += " u.name";
+        break;
+      case 5:
+        sql += " i.price";
+        break;
+      case 6:
+        sql += " unit_price";
+        break;
+      case 7:
+        sql += " protein_per_dollar";
+        break;
+      case 8:
+        sql += " calorie_per_dollar";
+        break;
+      default:
+        sql += " i.name";
+        break;
+    }
+    sql += " " + order;
+    
   console.log("About to query: ");
   console.log(sql);
   console.log(params);

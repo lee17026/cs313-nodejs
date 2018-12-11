@@ -126,7 +126,7 @@
               <option value="13">H Mart</option>
             </select>
         </div> 
-        <button class="btn btn-primary" onclick="filter()">Filter</button>
+        <button class="btn btn-primary" onclick="filter(-1)">Filter</button>
         <button class="btn btn-default" onclick="clearFilterFields()">Reset Form</button>
         <button class="btn btn-default" onclick="buildFullTable()">Reset Table</button>
       </div>
@@ -153,6 +153,7 @@
       <br />
       <br />
       <div id="status"></div>
+      <input style="display: none;" type="text" id="table_order" value="ASC">
 
     </body>
 </html>
