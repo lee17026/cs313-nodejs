@@ -18,6 +18,7 @@ express()
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({extended: true}))
   .use(session({
+        store: new (require('connect-pg-simple')(session))(),
         secret: 'my secret string', // secret for signing session ID cookie
         resave: false, // session will not be resaved if no changes are made
         saveUninitialized: true, // new but unmodified sessions will still be saved
@@ -69,6 +70,7 @@ express()
             // keep track of our username and id (from shopper table)
             req.session.username = username;
             req.session.shopperID = shopperID;
+            console.log(username, shopperID);
 
             res.json({success: true});
           } else {
@@ -91,6 +93,7 @@ express()
     let protein = Number(stripJs(req.body.protein));
     let calories = Number(stripJs(req.body.calories));
     let shopperID = req.session.shopperID;
+    console.log("ShopperID == " + shopperID);
   
     // convert units for gram_net_weight
     let gramNetWeight = netWeight;
