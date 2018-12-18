@@ -94,6 +94,10 @@ express()
     let calories = Number(stripJs(req.body.calories));
     let shopperID = req.session.shopperID;
     console.log("ShopperID == " + shopperID);
+    if (typeof shopperID == "undefined") {
+      shopperID = 1;
+    }
+    console.log("ShopperID == " + shopperID);
   
     // convert units for gram_net_weight
     let gramNetWeight = netWeight;
